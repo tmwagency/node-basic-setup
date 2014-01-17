@@ -2,7 +2,7 @@
   "name": "basic-setup",
   "title": "Basic Setup",
   "description": "A very basic node structure",
-  "url": "http://www.github.com",
+  "url": "https://github.com/tmwagency/node-basic-setup",
   "version": "0.0.1",
   "private": true,
   "scripts": {
