@@ -27,6 +27,10 @@ console.log('ENVIRONMENT = ' + env);
 //Create an express app
 var app = express();
 
+
+// Bootstrap routes
+require('./core/routes')(app);
+
 // express settings
 require('./core/express')(app, config);
 
@@ -44,13 +48,6 @@ server.listen(app.get('port'), function(){
 server.on('close', function(socket) {
 	console.log('app.js: Server has closed');
 });
-
-
-
-
-
-// Bootstrap routes
-require('./core/routes')(app);
 
 
 // expose app as the scope
