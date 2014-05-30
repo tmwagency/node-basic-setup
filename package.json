@@ -10,15 +10,16 @@
   },
   "dependencies": {
     "express": "4.3.2",
+    "compression": "1.0.2",
+    "morgan": "1.1.1",
+    "body-parser": "1.2.2",
+    "method-override": "1.0.2",
+
     "jade": "*",
     "socket.io": "*",
     "socket.io-client": "*",
     "underscore": "*",
-    "async": "*",
-    "compression": "1.0.2",
-    "morgan": "1.1.1",
-    "body-parser": "1.2.2",
-    "method-override": "1.0.2"
+    "async": "*"
   },
   "devDependencies": {
     "grunt": "*",

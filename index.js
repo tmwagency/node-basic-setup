@@ -27,14 +27,11 @@ console.log('ENVIRONMENT = ' + env);
 //Create an express app
 var app = express();
 
-
-// Bootstrap routes
-require('./core/routes')(app);
-
 // express settings
 require('./core/express')(app, config);
 
-
+// Bootstrap routes
+require('./core/routes')(app);
 
 
 
