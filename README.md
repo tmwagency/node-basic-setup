@@ -45,6 +45,6 @@ This setup is taken from a front-end framework I help maintain called [Kickoff](
 
 ## Have a play around
 
-If you’re new to Node, or vastly experienced with it, I’d love to [hear your feedback](hello@ashleynolan.co.uk).
+If you’re new to Node, or vastly experienced with it, I’d love to [hear your feedback](mailto:hello@ashleynolan.co.uk).
 
 Likewise, if you have any problems running the application, get in touch or raise an issue.
