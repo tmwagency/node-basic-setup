@@ -1,9 +1,9 @@
 
 /*!
- * Module dependencies.
+ * Declare our Module dependencies at the top
  */
 
-var async = require('async')
+var async = require('async');
 
 
 /**

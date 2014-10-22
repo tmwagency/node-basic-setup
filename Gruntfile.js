@@ -2,126 +2,75 @@ module.exports = function (grunt) {
 
 	'use strict';
 
+	// Load grunt tasks automatically
+	require('load-grunt-tasks')(grunt);
+
 	// ====================
-	// == Edit this section
-	var jsFileList = [
-		'public/js/socket.io.js',
-		'public/js/underscore-min.js',
-		'public/js/script.js'
-	];
-	var distDir = 'public/js/dist/';
-	var jsFile = 'script.min.js';
-	// ====================
+	// == config vars =====
 	// ====================
 
-	// Project configuration.
-	grunt.initConfig({
-		pkg: require('./package'),
+	var options = {
+		pkg: require('./package'), // <%=pkg.name%>
 
-		jshint: {
-			all: jsFileList,
-			options: {
-				jshintrc: '.jshintrc'
-			}
-		},
+		/**
+		 * Grunt global vars
+		 * Many of the Grunt tasks use these vars
+		 */
+		config : {
+			src: "_grunt-configs/*.js",
 
-		// Choose Sass files below
-		sass: {
-			dev: {
-				options: {
-					unixNewlines: true,
-					style: 'expanded',
-					lineNumbers: false,
-					debugInfo : false,
-					precision : 8,
-					sourcemap : true
-				},
-				files: {
-					'public/css/kickoff.css': 'public/scss/kickoff.scss'
-				}
-			},
-			deploy: {
-				options: {
-					style: 'compressed'
-				},
-				files: {
-					'public/css/kickoff.min.css': 'public/scss/kickoff.scss'
-				}
-
-			}
-		},
-
-		uglify: {
-			options: {
-				// mangle: Turn on or off mangling
-				mangle: true,
-
-				// beautify: beautify your code for debugging/troubleshooting purposes
-				beautify: false,
-
-				// report: Show file size report
-				report: 'gzip',
-
-				// sourceMap: @string. The location of the source map, relative to the project
-				sourceMap: distDir + jsFile + '.map',
-
-				// sourceMappingURL: @string. The string that is printed to the final file
-				sourceMappingURL: jsFile +'.map',
-
-				// sourceMapRoot: @string. The location where your source files can be found. This sets the sourceRoot field in the source map.
-				sourceMapRoot: '../../'
-
-				// sourceMapPrefix: @integer. The number of directories to drop from the path prefix when declaring files in the source map.
-				// sourceMapPrefix: 1,
-
-			},
-			js: {
-				src: jsFileList,
-				dest: distDir + jsFile
-			}
-		},
-
-		watch: {
-			scss: {
-				files: ['public/scss/**/*.scss'],
-				tasks: 'sass:dev'
+			css : {
+				distDir : 'public/css',     // <%=config.css.distDir%>
+				srcFile : 'kickoff', // <%=config.css.srcFile%>
+				scssDir : 'public/scss'     // <%=config.css.scssDir%>
 			},
 
-			js: {
-				files: [
-					'Gruntfile.js',
-					'public/js/**/*.js',
-					'public/js/libs/**/*.js'
-				],
-				tasks: ['uglify']
-			},
-			livereload: {
-				options: { livereload: true },
-				files: [
-					'public/css/*.css'
+			js : {
+				distDir  : 'public/js/dist/',   // <%=config.js.distDir%>
+				distFile : 'script.min.js', // <%=config.js.distFile%>
+
+				// <%=config.js.fileList%>
+				fileList : [
+					'public/js/libs/underscore.min.js',
+					'public/js/helpers/log.js', //log helper
+					'public/js/helpers/min.js', //minimal selector code - swap out for jQuery if you want something with more oomph
+
+					'public/js/script.js',
 				]
 			}
 		}
-	});
+	};
 
-	// Load some stuff
-	grunt.loadNpmTasks('grunt-contrib-jshint');
-	grunt.loadNpmTasks('grunt-contrib-sass');
-	grunt.loadNpmTasks('grunt-contrib-copy');
-	grunt.loadNpmTasks('grunt-contrib-uglify');
-	grunt.loadNpmTasks('grunt-contrib-watch');
-	grunt.loadNpmTasks('grunt-devtools');
+	// Load grunt configurations automatically
+	var configs = require('load-grunt-configs')(grunt, options);
+
+	// Define the configuration for all the tasks
+	grunt.initConfig(configs);
+
 
 	// =============
 	// === Tasks ===
 	// =============
 	// A task for development
-	grunt.registerTask('dev', ['uglify', 'sass:dev']);
+	grunt.registerTask('dev', [
+		'uglify',
+		'sass:kickoff',
+		'autoprefixer:kickoff'
+	]);
 
 	// A task for deployment
-	grunt.registerTask('deploy', ['uglify', 'sass:deploy']);
+	grunt.registerTask('deploy', [
+		'uglify',
+		'sass:kickoff',
+		'autoprefixer:kickoff',
+		'csso'
+	]);
 
 	// Default task
-	grunt.registerTask('default', ['uglify', 'sass:dev']);
+	grunt.registerTask('default', [
+		'uglify',
+		'sass:kickoff',
+		'autoprefixer:kickoff'
+	]);
 
 };

@@ -1,44 +1,43 @@
+/* ==========================================================================
+   Utility Mixins
+   ========================================================================== */
 // Clearfix
-// Other clearfix options: https://github.com/stubbornella/oocss/blob/oocss-sass/components/utils/_clearfix-me.scss
+// http://www.cssmojo.com/latest_new_clearfix_so_far/
+// Other clearfix options: https://github.com/stubbornella/oocss/blob/master/oocss/src/components/utils/_clearfix-me.scss
 @mixin clearfix {
-	*zoom: 1;
-	&:before,
 	&:after {
-		display: table;
-		content: " ";
-		zoom: 1;
-	}
-	&:after {
-		clear: both;
+		content:"";
+		display:table;
+		clear:both;
 	}
 }
 
 // REM
-// @include rem(margin, $base-font-size);
-@mixin rem($property, $sizeValue: $base-font-size){
-	$remValue: ($sizeValue / $base-font-size);
+// @include rem(margin, $font-size-base);
+@mixin rem($property, $sizeValue: $font-size-base){
+	$remValue: (strip-units($sizeValue) / $font-size-base);
 	#{$property}: $sizeValue + px;
 	#{$property}: $remValue + rem;
 }
 
-// =========================
-// === TYPOGRAPHY MIXINS ===
-// =========================
+/* ==========================================================================
+   Typography mixins
+   ========================================================================== */
 // REM font size
 // @include font-size(16);
-@mixin font-size($sizeValue: $base-font-size){
+@mixin font-size($sizeValue: $font-size-base){
 	@include rem(font-size, $sizeValue);
 }
 
 // REM line height
 // @include line-height(16);
-@mixin line-height($sizeValue: $base-line-height){
+@mixin line-height($sizeValue: $line-height-base){
 	@include rem(line-height, $sizeValue);
 }
 
 // EM font size
 // @include font-size-ems(20, 16);
-@mixin font-size-ems($target-px-size, $context-px-size:$base-font-size) {
+@mixin font-size-ems($target-px-size, $context-px-size:$font-size-base) {
 	font-size: ($target-px-size / $context-px-size) * 1em;
 }
 
@@ -47,33 +46,21 @@
 @mixin font-face( $family-name, $font-path, $font-weight:normal, $font-style:normal, $include-svg:false ) {
 	@font-face {
 		font-family: $family-name;
-		src: url('${font-path}.eot');
-		src: url('${font-path}.eot?#iefix')				format('embedded-opentype'),
-			 url('${font-path}.woff')					format('woff'),
-			 url('${font-path}.ttf')					format('truetype')
+		src: url('#{$font-path}.eot');
+		src: url('#{$font-path}.eot?#iefix') format('embedded-opentype'),
+			 url('#{$font-path}.woff') format('woff'),
+			 url('#{$font-path}.ttf') format('truetype')
 			 // @if $include-svg == true {
-				,url('${font-path}.svg#{$family-name}') format('svg');
+				,url('#{$font-path}.svg##{$family-name}') format('svg');
 			 // }
 		font-weight: $font-weight;
 		font-style: $font-style;
 	}
 }
 
-// Optional hyphenation
-// https://developer.mozilla.org/en-US/docs/CSS/hyphens
-// @include hyphens();
-@mixin hyphens($arg: auto) {
-	word-wrap: break-word;
-	@include prefixer(hyphens, $arg, webkit moz ms o spec);
-}
-
-
-
 // Centre-align a block level element
-// @extend %center-block
-// #context a%center-block
-// http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html#placeholders
-%center-block {
+// @include center-block
+@mixin center-block() {
 	display: block;
 	margin: 0 auto;
 }
@@ -92,11 +79,28 @@
 
 // INPUT PLACEHOLDER TEXT
 @mixin placeholder($color: lighten(#000, 70%)) {
+	:-ms-input-placeholder {
+		color: $color;
+	}
 	:-moz-placeholder {
 		color: $color;
 	}
 	::-webkit-input-placeholder {
 		color: $color;
+	}
+}
+
+// Text selection
+@mixin text-selection($color-selection, $color-selection-bg) {
+	::-moz-selection {
+		color: $color-selection;
+		background: $color-selection-bg;
+		text-shadow: none;
+	}
+	::selection {
+		color: $color-selection;
+		background: $color-selection-bg;
+		text-shadow: none;
 	}
 }
 
@@ -112,15 +116,13 @@
 // @include truncate(100%);
 @mixin truncate($truncation-boundary) {
 	max-width: $truncation-boundary;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
+	@include text-overflow();
 }
 
 // Text overflow
-// @extend %text-overflow;
+// @include text-overflow();
 // Requires inline-block or block for proper styling
-%text-overflow {
+@mixin text-overflow {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
@@ -131,13 +133,4 @@
 @mixin resizable($direction: both) {
 	resize: $direction; // Options are horizontal, vertical, both
 	overflow: auto; // Safari fix
-}
-
-// @extend %tab-focus;
-%tab-focus {
-	// Default
-	outline: thin dotted #333;
-	// Webkit
-	outline: 5px auto -webkit-focus-ring-color;
-	outline-offset: -2px;
 }

@@ -1,22 +1,24 @@
 /**
- * Module dependencies.
+ * Declare our Module dependencies at the top
  */
-var express = require('express')	//express - application framework for node
- 	, fs = require('fs')			//fs - filesystem libraru
-	, http = require('http')		//http - give me server
-	, _ = require('underscore')		//underscore - some extra JS sugar
-	, path = require('path');		//http://nodejs.org/docs/v0.4.9/api/path.html
+var express = require('express'),	//express - application framework for node
+ 	fs = require('fs'),			//fs - filesystem libraru
+	http = require('http'),		//http - give me server
+	_ = require('underscore'),		//underscore - some extra JS sugar
+	path = require('path');		//http://nodejs.org/docs/v0.4.9/api/path.html
 
 
 /**
- * Main application entry file.
- * Please note that the order of loading is important.
+ * Index.js
+ * The main application entry file.
+ * Please note that the order of loading is important!
  */
 
-var env = process.env.NODE_ENV || 'local'		//get the environemnt var or set as development
-	, config = require('./config/config')[env];	//get config based on the specifed environment
+var env = process.env.NODE_ENV || 'local',		//get the environemnt var or set as development
+	config = require('./core/config')[env];	//get config based on the specifed environment
 
 
+// log out the environment variable to the terminal
 console.log('ENVIRONMENT = ' + env);
 
 
@@ -49,5 +51,4 @@ server.on('close', function(socket) {
 
 // expose app as the scope
 exports = module.exports = app;
-
 

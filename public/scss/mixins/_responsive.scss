@@ -1,7 +1,22 @@
+/* ==========================================================================
+   Responsive media query mixins
+   * These are used so that we can define separate media-query content
+     for <IE9 and browsers with support for media queries
+   * These are directly related to the global $fix-mqs var defined in
+     kickoff-old-ie.scss
+   * kickoff-old-ie.scss ignores any content in media-queries with values less
+     than the $fix-mqs var value
+   ========================================================================== */
 $fix-mqs: false !default; //assign false if no value set already
 
+/*
+   Min-width media query:
+   * Equivalent to: @media screen and (min-width: 20em) { ... }
+   * Usage: @include respond-min(500) { ... };
+   * Argument is a pixel value WITHOUT a unit of measurement
+   ========================================================================== */
 @mixin respond-min($width) {
-	$width-em: $width / $base-font-size + em;
+	$width-em: em(strip-units($width));
 
 	// If we're outputting for a fixed media query set...
 	@if $fix-mqs {
@@ -18,8 +33,16 @@ $fix-mqs: false !default; //assign false if no value set already
 		}
 	}
 }
+
+
+/*
+   Max-width media query:
+   * Equivalent to: @media screen and (max-width: 20em) { ... }
+   * Usage: @include respond-max(500) { ... };
+   * Argument is a pixel value WITHOUT a unit of measurement
+   ========================================================================== */
 @mixin respond-max($width) {
-	$width-em: $width / $base-font-size + em;
+	$width-em: em(strip-units($width));
 
 	// If we're outputting for a fixed media query set...
 	@if $fix-mqs {
@@ -36,9 +59,19 @@ $fix-mqs: false !default; //assign false if no value set already
 		}
 	}
 }
+
+
+
+
+/*
+   Min-max-width media query:
+   * Equivalent to: @media screen and (min-width: 10em) and (max-width: 20em) { ... }
+   * Usage: @include respond-min-max(500, 600) { ... };
+   * Arguments are pixel values WITHOUT a unit of measurement
+   ========================================================================== */
 @mixin respond-min-max($min-width, $max-width) {
-	$min-width-em: $min-width / $base-font-size + em;
-	$max-width-em: $max-width / $base-font-size + em;
+	$min-width-em: em(strip-units($min-width));
+	$max-width-em: em(strip-units($max-width));
 
 	// If we're outputting for a fixed media query set...
 	@if $fix-mqs {
@@ -56,30 +89,14 @@ $fix-mqs: false !default; //assign false if no value set already
 	}
 }
 
-
-@mixin respond-min-height($width) {
-	$width-em: $width / $base-font-size + em;
-
-	// If we're outputting for a fixed media query set...
-	@if $fix-mqs {
-		// ...and if we should apply these rules...
-		@if $fix-mqs >= $height {
-			// ...output the content the user gave us.
-			@content;
-		}
-	}
-	@else {
-		// Otherwise, output it using a regular media query
-		@media screen and (min-width: $width-em) {
-			@content;
-		}
-	}
-}
-
+/*
+   Old IE specific mixin
+   * Only use this content if we're dealing with old IE
+   * Usage: @include oldie() { ... }
+   ========================================================================== */
 $old-ie: false !default;
 
 @mixin old-ie {
-	// Only use this content if we're dealing with old IE
 	@if $old-ie {
 		@content;
 	}

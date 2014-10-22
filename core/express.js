@@ -1,14 +1,14 @@
 
 /**
- * Module dependencies.
+ * Declare our Module dependencies at the top
  */
 
-var express = require('express')
-	, compress = require('compression')
-	, logger  = require('morgan')
-	, bodyParser = require('body-parser')
-	, methodOverride = require('method-override')
-	, pkg = require('../package.json');
+var express = require('express'),
+	compress = require('compression'),
+	logger  = require('morgan'),
+	bodyParser = require('body-parser'),
+	methodOverride = require('method-override'),
+	pkg = require('../package.json');
 
 module.exports = function (app, config) {
 

@@ -1,40 +1,41 @@
-// =========================
-// === TYPOGRAPHY.scss =====
-// === TABLE OF CONTENTS ===
-// =========================
-// * Body text
-// * Base
-// * Paragraphs
-// * Headings
-// * Lists
-// * Quotes
-// * Links
-// * Helper classes
+/**
+ * Typography
+ * =================================
+ * Base
+ * Paragraphs
+ * Headings
+ * Links
+ * Lists
+ * Definition lists
+ * Blockquotes
+ * Misc
+ * Utilities
+ *
+ * Body font size, leadings etc have been set in _variables.scss
+ * Resources:
+ * http://www.gridlover.net/
+ * http://modularscale.com/
+ * http://lamb.cc/typograph/
+ *
+ */
 
-// === Resources: ===
-// ==================
-// * http://www.gridlover.net/
-// * http://modularscale.com/
-// * http://lamb.cc/typograph/
+html {
+	font-size: $font-size-base-narrow-px;
+	text-size-adjust: 100%;
 
-// Body font size, leadings etc have been set in _variables.scss.
-// The default typography has been built using gridlover.net with these settings:
-// * Body font size    : 16
-// * Body line height  : 1.400
-// * Scale factor      : 1.333 (Musical/Perfect Fourth)
+	@include respond-min($bp-rwd-text) {
+		font-size: $font-size-base-px;
+	}
+}
 
-// Here is the same result from modularscale.com.
-// http://modularscale.com/scale/?px1=16&px2=&ra1=1.333&ra2=0
-// ------------------------------------------------------------------------------
-
-
-// Body text
 body {
-	font-family: $base-font-family;
-	@include font-size($base-font-size);
-	line-height: $base-leading;
+	font-family: $font-family-base;
+	@include font-size($type-base);
+	line-height: $leading-base;
 	color: $color-text;
-	background-color: $color-background;
+
+	// Add ligatures
+	font-feature-settings: "liga","dlig";
 
 	// Two ways to smoothen type, they are disabled by default
 	// Enable only one of them if you need them
@@ -45,108 +46,106 @@ body {
 	// font-smooth:always;
 
 	// 2.
-	// @include opacity(99);
+	// opacity: 0.99;
 }
 
+/**
+ * Paragraphs
+ */
 p {
-	font-family: $base-font-family;
-	@include font-size($base-font-size - 2);
+	font-family: $font-family-base;
+	@include font-size($type-base);
 	margin-top: 0;
-	margin-bottom: 12px;
-
-	@include respond-min(650) {
-		margin-bottom: $base-line-height + px;
-	}
-
-	@include respond-min($breakpoint-mid) {
-		@include font-size($base-font-size);
-	}
+	margin-bottom: $baseline;
 
 	// Measure - ideally about 65 chars per line
 	// =========================================
-	// max-width: $base-font-size * 30 + px;
+	// max-width: $type-base * 30 + px;
 
 	// & small {
 	// 	color: lighten($color-text, 10%);
 	// }
 }
 
-// Headings
+/**
+ * Headings
+ */
 h1, h2, h3, h4, h5, h6 {
 	margin: 0;
-	font-family: $headings-font-family;
-	font-weight: $headings-font-weight;
-	color: $color-headings;
+	font-family: $font-family-headings;
+	font-weight: $font-weight-headings;
+	line-height: $line-height-headings;
 	text-rendering: optimizelegibility; // Fix the character spacing for headings
 
 	& small {
 		font-weight: normal;
-		color: lighten($color-headings, 15%);
-	}
-
-	&:first-child {
-		margin-top: 0;
 	}
 }
 
 // Use the helper classes to emulate styles for another element
 // For example: h3.h1 or h3.alpha
-
 h1, .h1, .alpha {
-	@include font-size(38);
+	@include font-size($type-largest);
 	margin-top: 0;
-	margin-bottom: ($base-line-height * 2) + px;
-
-	@include respond-min($breakpoint-narrow) {
-		@include font-size(46);
-	}
+	margin-bottom: $baseline * 2;
 }
 
 h2, .h2, .beta {
-	@include font-size(24);
+	@include font-size($type-larger);
 	margin-top: 0;
-	margin-bottom: $base-line-height + px;
+	margin-bottom: $baseline;
 }
 
 h3, .h3, .gamma {
-	@include font-size(21);
+	@include font-size($type-large);
 	margin-top: 0;
-	margin-bottom: 0px;
+	margin-bottom: $baseline;
 }
 
-h4, .h4,, .delta,
+h4, .h4, .delta,
 h5, .h5, .epsilon,
 h6, .h6, .zeta {
 	margin-top: 0;
 	margin-bottom: 0;
+	@include font-size($type-small);
 }
 
 h4, .h4, .delta {
-	@include font-size($base-font-size);
+	@include font-size($type-base);
 }
 
-h5, .h5, .epsilon {
-	@include font-size(12);
-}
+// h5, .h5, .epsilon {
+// }
 
 h6, .h6, .zeta {
-	@include font-size(11);
-	color: lighten(#000, 70%);
 	text-transform: uppercase;
 }
 
+* + h1, * + .h1, * + .alpha,
+* + h2, * + .h2, * + .beta,
+* + h3, * + .h3, * + .gamma,
+* + h4, * + .h4, * + .delta {
+	margin-top: $baseline;
+}
 
-// Links
+small {
+	font-size: 80%;
+}
+
+/**
+ * Links
+ */
 a {
 	&, &:link {
 		color: $color-link-default;
 		text-decoration: none;
 	}
+
 	&:visited {
 		color: $color-link-visited;
 		text-decoration: none;
 	}
-	&:hover {
+	&:hover, &:focus {
 		color: $color-link-hover;
 		//text-decoration: underline;
 	}
@@ -156,25 +155,109 @@ a {
 	}
 }
 
-// === Misc ===
 
+/**
+ * Lists
+ */
+ul {
+	list-style-type: disc;
+}
+ol {
+	list-style-type: decimal;
+}
+
+// Unordered and Ordered lists
+// Add a .unstyled class to unordered/ordered lists if you want them to have bullets/numbers
+ul, ol {
+	padding: 0;
+	margin: 0 0 $baseline $baseline;
+
+	ul,
+	ol {
+		margin-left: $baseline * 2;
+	}
+
+	ul {
+		list-style-type: circle;
+
+		ul {
+			list-style-type: square;
+		}
+	}
+
+	ol {
+		list-style-type: upper-roman;
+
+		ol {
+			list-style-type: lower-roman;
+		}
+	}
+
+	ul,
+	ol {
+		margin-bottom: 0;
+	}
+}
+
+/**
+ * Unstyled lists
+ */
+.unstyled,
+nav ul, nav ol {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	list-style-image: none;
+}
+
+
+/**
+ * Definition lists
+ */
+dl {
+	margin-bottom: $baseline;
+}
+dt {
+	font-weight: $font-weight-bold;
+}
+dd {
+	margin-left: $baseline;
+}
+
+.dl-horizontal {
+	@include clearfix;
+
+	dt {
+		@include text-overflow();
+		float: left;
+		clear: left;
+		width: 220px;
+		text-align: right;
+	}
+
+	dd {
+		margin-left: 240px;
+	}
+}
+
+
+/**
+ * Miscellaneous
+ */
 // Horizontal rules
 hr {
-	margin: ($base-line-height + px) 0;
+	margin: ($baseline) 0;
 	border: 0;
-	border-top: 1px solid $hrBorder;
+	border-top: 1px solid $hr-border;
 	border-bottom: 1px solid #fff;
 }
 
 // Emphasis
 strong, b {
-	font-weight: $bold-font-weight;
+	font-weight: $font-weight-bold;
 }
 em, i {
 	font-style: italic;
-}
-.muted {
-	color: lighten(#000, 70%);
 }
 
 // Abbreviations and acronyms
@@ -182,41 +265,27 @@ abbr[title] {
 	border-bottom: 1px dotted #ddd;
 	cursor: help;
 }
-abbr.initialism {
-	font-size: 90%;
-	text-transform: uppercase;
-}
 
-// Blockquotes
+/**
+ * Blockquotes
+ */
 blockquote {
-	padding: 0 0 0 15px;
-	margin: 0 0 ($base-line-height + px);
-	border-left: 5px solid lighten(#000, 70%)er;
+	padding-left: 10px;
+	margin: $baseline;
+	border-left: 4px solid lighten(#000, 80%);
+
 	& p {
 		margin-bottom: 0;
-		@include font-size($base-font-size);
+		@include font-size($type-base);
 		font-weight: 300;
-		@include line-height($base-line-height * 1.25);
-	}
-	& small {
-		display: block;
-		@include line-height($base-line-height);
-		color: lighten(#000, 70%);
-		&:before {
-			content: '\2014 \00A0';
-		}
 	}
 
-	// Float right with text-align: right
-	&.pull-right {
-		float: right;
-		padding-left: 0;
-		padding-right: 15px;
-		border-left: 0;
-		border-right: 5px solid lighten(#000, 70%)er;
-		& p,
-		& small {
-			text-align: right;
+	& small {
+		display: block;
+		color: lighten(#000, 70%);
+
+		&:before {
+			content: '\2014 \00A0';
 		}
 	}
 }
@@ -233,13 +302,8 @@ blockquote {
 // Addresses
 address {
 	display: block;
-	margin-bottom: $base-line-height + px;
-	@include line-height($base-line-height);
+	margin-bottom: $baseline;
 	font-style: normal;
-}
-
-small {
-	font-size: 75%;
 }
 
 cite {
@@ -253,15 +317,16 @@ dfn {
 
 // Addresses styling not present in IE6/7/8/9
 mark {
-	background: #ff0;
-	color: #000;
+	background: $yellow;
+	padding: 2px 4px;
+	border-radius: 3px;
 }
 
 // Prevents sub and sup affecting line-height in all browsers
 // gist.github.com/413930
 sub, sup {
 	font-size: 75%;
-	@include line-height(0);
+	line-height: 0;
 	position: relative;
 	vertical-align: baseline;
 }
@@ -269,96 +334,23 @@ sub, sup {
 sup { top: -0.5em; }
 sub { bottom: -0.25em; }
 
-
-// === Lists ===
-// default list styles
-ul { list-style-type: disc }
-ol { list-style-type: decimal }
-
-// Unordered and Ordered lists
-// Add a .unstyled class to unordered/ordered lists if you want them to have bullets/numbers
-ul, ol {
-	padding: 0;
-	margin: 0 0 ($base-line-height + px) ($base-line-height + px);
-
-	& ul,
-	& ol {
-		margin-left: ($base-line-height * 2) + px;
-	}
-
-	& ul {
-		list-style-type: circle;
-		& ul {
-			list-style-type: square;
-		}
-	}
-
-	& ol {
-		list-style-type: upper-roman;
-		& ol {
-			list-style-type: lower-roman;
-		}
-	}
-
-	& ul,
-	& ol {
-		margin-bottom: 0;
-	}
-}
-
-.unstyled {
-	margin: 0;
-	padding: 0;
-	list-style: none;
-	list-style-image: none;
+samp {
+	font-family: $font-family-mono;
 }
 
 
-// === Definition lists ===
-dl {
-	margin-bottom: $base-line-height + px;
+/**
+ * Utilities
+ */
+.text-centre, // British or US English spellings..
+.text-center {
+	text-align: center;
+}
+.text-left {
+	text-align: left;
+}
+.text-right {
+	text-align: right;
 }
 
-dt,
-dd {
-	@include line-height($base-line-height);
-}
-
-dt {
-	font-weight:$bold-font-weight;
-	@include line-height($base-line-height - 1); // fix jank Helvetica Neue font bug
-
-	// Horizontal layout (like forms)
-	.dl-horizontal & {
-		@extend %text-overflow;
-		float: left;
-		clear: left;
-		width: 220px;
-		text-align: right;
-	}
-}
-
-dd {
-	margin-left: $base-line-height + px;
-
-	.dl-horizontal & {
-		margin-left: 240px;
-	}
-}
-
-// === Utilities ===
-.text-centre, .text-center { text-align: center;}
-.text-left { text-align: left;}
-.text-right { text-align: right;}
-
-
-
-::-moz-selection {
-	color: lighten($color-selection, 55%);
-	background: $color-selection;
-}
-
-::selection {
-	color: lighten($color-selection, 55%);
-	background: $color-selection;
-}
+@include text-selection($color-selection, $color-selection-bg);

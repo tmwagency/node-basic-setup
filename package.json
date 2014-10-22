@@ -1,9 +1,9 @@
 {
   "name": "basic-setup",
-  "title": "Basic Setup",
+  "title": "Node – A Basic Setup",
   "description": "A very basic node structure",
   "url": "https://github.com/tmwagency/node-basic-setup",
-  "version": "0.0.1",
+  "version": "1.0.1",
   "private": true,
   "scripts": {
     "start": "node index.js"
@@ -16,20 +16,20 @@
     "jade": "^1.7.0",
     "method-override": "^1.0.2",
     "morgan": "^1.1.1",
-    "socket.io": "^1.1.0",
-    "socket.io-client": "^1.1.0",
     "underscore": "^1.7.0"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
+    "grunt-autoprefixer": "~1.0.1",
     "grunt-contrib-copy": "^0.7.0",
     "grunt-contrib-jshint": "^0.10.0",
     "grunt-contrib-sass": "^0.8.1",
     "grunt-contrib-uglify": "^0.6.0",
     "grunt-contrib-watch": "^0.6.1",
+    "grunt-csso": "~0.6.3",
     "grunt-devtools": "^0.2.1"
   },
-  "subdomain": "twitterpoll",
+  "subdomain": "node-basic-setup",
   "engines": {
     "node": "0.10.x"
   }
